@@ -1,0 +1,45 @@
+body {
+  font-family: Roboto,sans-serif;
+  margin:0px;
+}
+
+.header {
+  font-size: 16px;
+  font-weight: bolder;
+  color: #e1232a;
+  box-shadow: 0px 3px #eee;
+}
+
+.topBar {
+  background: black;
+  text-align: center;
+  color: white;
+}
+
+.topBar p {
+  margin: 0px;
+  padding: 10px 0px;
+}
+
+.menuBar {
+  width: 80%;
+  margin: auto;
+  padding: 10px 0px;
+  height: 80px;
+}
+
+.menuBar img {
+  width: 15%;
+  height: auto;
+  float: left;
+}
+
+.menuBar ul {
+  float: right;
+  list-style-type: none;
+}
+
+.menuBar ul li {
+  display: inline;
+  padding: 0px 20px;
+}

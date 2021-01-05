@@ -2,26 +2,23 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="styles.css"/>
+    <link rel="icon" href="images/favicon.png">
+    <title>TODO Application - Enter your TODO items</title>
   </head>
   <body>
     <header>
       <h1>This is a TODO Application</h1>
     </header>
-    <section class="dataEntry">
-      <input id="data" type="text" placeholder="Enter your item here!" required="true" size="100">
-      <input type="button" value="Add" onclick="addToList()">
-      <input type="button" value="Delete" onclick="deleteFromList()">
+    <section class="data-entry">
+      <form id="list-form">
+        <input id="data" type="text" placeholder="Enter your item here!" required="true" size="100">
+      </form>
     </section>
-    <section>
-      <fieldset id="list">
-        <legend>My list of TODO items</legend>
-      </fieldset>
+    <section class="data-display">
+      <input type="button" value="Delete" id="delete">
+      <ul id="list">
+      </ul>
     </section>
-    <!-- <script src="index.js"></script> -->
-    <script src="examples.js">
-    </script>
-    <script>
-      strStr("mississippi","issipi");
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>

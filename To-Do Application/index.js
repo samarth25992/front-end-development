@@ -3,85 +3,80 @@
   let input = document.getElementById("data");
   let form = document.getElementById("list-form");
   let deleteBtn = document.getElementById("delete");
-  let items = localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")) : [];
+  let listCounter = 1;
 
-  localStorage.setItem("data",JSON.stringify(items));
-  let data = JSON.parse(localStorage.getItem("data"));
-
-  input.focus();
-
-  let addToList = function(value) {
-    let li = liMaker();
-    let item = inputMaker("checkbox");
-    let span = spanMaker(value);
-    li.appendChild(item);
+  let addToList = function(item) {
+    let li = createElement({element: "li"});
+    let input = createElement({element: "input", type: "checkbox", name: "item" + listCounter});
+    let span = createElement({element: "span", value: item["data"]});
+    li.appendChild(input);
     li.appendChild(span);
     ul.appendChild(li);
-  }
-
-  let liMaker = () => {
-    return document.createElement("li");
   };
 
-  let inputMaker = (type) => {
-    let input = document.createElement("input");
-    input.type = type;
-    return input;
+  let createElement = function(elementAttr) {
+    let element = document.createElement(elementAttr.element);
+    if(elementAttr.type) {
+      element["type"] = elementAttr["type"];
+    }
+
+    if(elementAttr.value) {
+      element["innerHTML"] = elementAttr["value"];
+    }
+
+    if(elementAttr.name) {
+      element["name"] = elementAttr["name"];
+    }
+    return element;
   };
 
-  let spanMaker = (value) => {
-    let span = document.createElement("span");
-    span.innerHTML = value;
-    return span;
-  };
-
-  let storeInLocalStorage = (value) => {
-    let item = { item: value };
-    items.push(item);
-    localStorage.setItem("data",JSON.stringify(items));
-  };
-
-  let removeFromLocalStorage = (items) => {
-    let allItems = JSON.parse(localStorage.getItem("data"));
-    items.forEach(item => {
-      allItems = allItems.filter(data => data.item !== item.nextSibling.innerHTML);
-    });
-    localStorage.setItem("data",JSON.stringify(allItems));
-  };
-
-  data.forEach(data => {
-    addToList(data.item);
-  });
-
-  let deleteFromList = function() {
-    let items = document.querySelectorAll("input[type=checkbox]:checked");
-
-    removeFromLocalStorage(items);
+  let deleteFromList = function(items) {
+    localstorage.remove("data", items);
     items.forEach(item => {
       item.nextSibling.remove();
       item.remove();
     });
   };
 
-  let checkForDuplicates = (value) => {
-    let items = JSON.parse(localStorage.getItem("data"));
-    for(let data of items) {
-      if(data.item === value) {
-        alert("You already have the same item in the list! Please add another one.");
-        return true;
+  let checkForDuplicates = function(item) {
+    let items = localstorage.read("data");
+    if(items) {
+      for(let i of items) {
+        if(i.data === item.data)
+          return true;
       }
     }
     return false;
   };
-  deleteBtn.addEventListener("click",deleteFromList);
 
   form.addEventListener("submit", function(e) {
     e.preventDefault();
-    let isDuplicate = checkForDuplicates(input.value);
+    let item = { id: listCounter, data: input.value };
+    let isDuplicate = checkForDuplicates(item);
+
     if(!isDuplicate) {
-      storeInLocalStorage(input.value);
-      addToList(input.value);
+      localstorage.insert("data", item);
+      addToList(item);
+      listCounter++;
       input.value = '';
+    } else {
+      alert("You already have the same item in the list! Please add another one.");
     }
   });
+
+  deleteBtn.addEventListener("click",function(e) {
+    let items = document.querySelectorAll("input[type=checkbox]:checked");
+    deleteFromList(items);
+  });
+
+  if(localstorage.read("data")) {
+    let data = localstorage.read("data");
+    for(let i of data) {
+      let item = { data: i.data};
+      addToList(item);
+    }
+  }
+
+  input.focus();
+
 })();

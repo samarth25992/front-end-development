@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
     <link rel="icon" href="images/favicon.png">
     <title>TODO Application - Enter your TODO items</title>
   </head>
@@ -10,8 +10,18 @@
       <h1>This is a TODO Application</h1>
     </header>
     <section class="data-entry">
+      <h3>Select the source:</h3>
+      <select name="methods" id="storage">
+        <option value="LocalStorage">LocalStorage</option>
+        <option value="File">File</option>
+        <option value="API">API</option>
+      </select>
+    </section>
+    <section class="data-entry">
       <form id="list-form">
         <input id="data" type="text" placeholder="Enter your item here!" required="true" size="100">
+        </br>
+        <input type="file" id="todoFile">
       </form>
     </section>
     <section class="data-display">
@@ -19,7 +29,8 @@
       <ul id="list">
       </ul>
     </section>
-    <script src="localstorage.js"></script>
-    <script src="index.js"></script>   
+    <script src="js/localstorage.js"></script>
+    <script src="js/file.js"></script>
+    <script src="js/index.js"></script>   
   </body>
 </html>

@@ -64,3 +64,9 @@ legend {
   padding: 5px;
   color: #fff;
 }
+
+select {
+  border: 1px solid #ba6060;
+  border-radius: 5px;
+  height: 35px;
+}

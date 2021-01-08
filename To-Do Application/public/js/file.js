@@ -1,14 +1,23 @@
-let file = (function() {
+export default class File {
+   
+    constructor(data) {
+        this.data = data;
+    }
 
-    let filename;
+    insert = () => {
+        data.push(item);
+    }
 
-    let set = function() {
+    remove = () => {
 
-    };
+    }
 
-    let get = function() {
+    read = () => {
 
-    };
+    }
+
+    update = () => {
+
+    }
 }
-)();
 

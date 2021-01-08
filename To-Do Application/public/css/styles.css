@@ -16,9 +16,28 @@ header h1 {
   padding: 10px 0px;
 }
 
-.data-entry {
-  margin: 50px;
+.source-entry {
+  margin: 50px 50px 30px;
   text-align: center;
+}
+
+.source-entry h3 {
+  display: inline;
+  margin: 5px;
+}
+
+.data-entry {
+  margin: 30px;
+  text-align: center;
+}
+
+.data-entry input {
+  display: block;
+  margin: 20px auto;
+}
+
+#todoFile {
+  display: none;
 }
 
 .data-display {

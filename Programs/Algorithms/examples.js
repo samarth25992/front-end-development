@@ -1,3 +1,23 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+let findKthLargest = function(nums, k) {
+
+    let result = 0;
+    let heap = new MaxHeap();
+    nums.forEach(item => {
+      heap.insert(item);
+    });
+
+    while(k) {
+      result = heap.remove();
+      k--;
+    }
+    return result;
+}
+
 class MaxHeap {
 
     constructor(heap = []) {
@@ -28,10 +48,7 @@ class MaxHeap {
             let left = this.leftChild(index);
             let right = this.rightChild(index);
 
-            while(this.heap[left] !== undefined && 
-                  this.heap[right] !== undefined && 
-                  this.heap[left] >= this.heap[index] || 
-                  this.heap[right] >= this.heap[index]) {
+            while(this.heap[left] !== undefined && this.heap[right] !== undefined && this.heap[left] >= this.heap[index] || this.heap[right] >= this.heap[index]) {
                 
                 if(this.heap[left] > this.heap[right]) {
                     [this.heap[left], this.heap[index]] = [this.heap[index], this.heap[left]];

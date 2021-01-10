@@ -85,21 +85,30 @@ class BuildTodoList {
       case "LocalStorage": 
       this.dataStorage = localstorage;
       library.setCSS({ element: this.uploadFile, properties: [{name: "display", value: "none"}]});
-      library.getItems({ selector: "li" }).forEach(i => i.remove());
+      this.ul.innerHTML = "";
+      //library.getItems({ selector: "li" }).forEach(i => i.remove());
       this.constructData(this.dataStorage.read());
       break;
       
       case "API":
         this.dataStorage = API;
-        library.getItems({ selector: "li" }).forEach(i => i.remove());
+        this.ul.innerHTML = "";
+        //library.getItems({ selector: "li" }).forEach(i => i.remove());
 
-        let response = api.usingAsyncAwait("https://jsonplaceholder.typicode.com/todos").then(
+        /*let response = api.usingAsyncAwait("https://jsonplaceholder.typicode.com/todos").then(
           response => {
             let data = [];
             response.forEach(i => data.push({ data: i.title }));
             this.constructData(data);
           }
-        );        
+        );*/
+        
+        let response = api.usingFetch("https://jsonplaceholder.typicode.com/todos");
+        response.then(response => {
+          let data = [];
+          response.forEach(i => data.push({ data: i.title }));
+          this.constructData(data);
+        });
         break;
     }
   }

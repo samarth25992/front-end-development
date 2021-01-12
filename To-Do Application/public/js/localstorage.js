@@ -10,6 +10,10 @@ export default class Localstorage {
         localStorage.setItem(this.key, JSON.stringify(data));
     }
 
+    add = (key, value) => {
+        localStorage.setItem(key, value);
+    }
+
     remove = (items) => {
         let data = this.read(this.key);
         items.forEach(item => {

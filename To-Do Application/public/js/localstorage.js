@@ -4,37 +4,31 @@ export default class Localstorage {
         this.key = key;
     }
 
-    insert = (item) => {
-        let data = this.read(this.key) ? this.read(this.key) : [];
-        data.push(item);
-        localStorage.setItem(this.key, JSON.stringify(data));
+    insert = (key, value) => {
+        localStorage.setItem(key, JSON.stringify(value));
     }
 
-    add = (key, value) => {
-        localStorage.setItem(key, value);
-    }
-
-    remove = (items) => {
-        let data = this.read(this.key);
+    remove = (key, items) => {
+        let data = this.read(key);
         items.forEach(item => {
-            data = data.filter(i => i.data !== item.nextSibling.innerHTML);
+            data = data.filter(i => i.name !== item.name);
         });
-        this.update(data);
+        this.update(key, data);
     }
 
-    read = () => {
-        return JSON.parse(localStorage.getItem(this.key));
+    read = (key) => {
+        return JSON.parse(localStorage.getItem(key));
     }
 
-    update = (data) => {
-        localStorage.setItem(this.key, JSON.stringify(data));
+    update = (key, value) => {
+        localStorage.setItem(key, JSON.stringify(value));
     }
 
-    checkForDuplicates = (item) => {
-        let items = this.read(this.key);
+    checkForDuplicates = (key, value) => {
+        let items = this.read(key);
         if(items) {
           for(let i of items) {
-            if(i.data === item.data)
+            if(i.data === value)
               return true;
           }
         }

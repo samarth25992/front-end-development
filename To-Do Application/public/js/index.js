@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime";
 import Localstorage from './localstorage.js';
 import File from './file.js';
 import Library from './library.js';
@@ -14,19 +15,21 @@ class BuildTodoList {
     this.select = document.getElementById("storage"),
     this.uploadFile = document.getElementById("todoFile"),
     this.dataStorage = localstorage;
-    this.counterStorage = counterLocalStorage;
     this.clicked = false;
   }
 
   initialize() {
 
     //At the time of refresh, if there is data in localstorage, load that and create the list 
-    if(this.dataStorage.read()) {
-      this.constructData(this.dataStorage.read());   
+    if(this.dataStorage.read("data") !== null) {
+      this.constructData(this.dataStorage.read("data"));   
+    } else {
+      this.dataStorage.insert("data", []);
     }
 
-    if(!this.counterStorage.read()) {
-      this.counterStorage.add("counter", 0);
+    //Setting the counter for the names of list items
+    if(!this.dataStorage.read("counter")) {
+      this.dataStorage.insert("counter", 0);
     }
     
     this.addListeners();
@@ -35,7 +38,7 @@ class BuildTodoList {
 
   constructData(data) {
     for(let i of data) {
-        let item = { data: i.data};
+        let item = { data: i.data, name: i.name };
         this.addToList(item);
     }
   }
@@ -46,12 +49,17 @@ class BuildTodoList {
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const item = { data: this.input.value, name: "check-" + this.counterStorage.read() };
-      if(!(this.dataStorage.checkForDuplicates(item))) {
-        this.dataStorage.insert(item);
+      const item = { data: this.input.value, name: "check-" + this.dataStorage.read("counter") };
+      if(!(this.dataStorage.checkForDuplicates("data", item.data))) {
+
+        let data = this.dataStorage.read("data");
+        data.push(item);
+        this.dataStorage.update("data", data);
+        this.dataStorage.update("counter", parseInt(this.dataStorage.read("counter")) + 1);
+
         this.addToList(item);
         this.input.value = '';
-        this.counterStorage.add("counter", parseInt(this.counterStorage.read()) + 1);
+        
       } else {
         alert("You already have the same item in the list! Please add another one.");
       }
@@ -66,7 +74,10 @@ class BuildTodoList {
       this.sourceSelection();
     });
 
-    this.ul.addEventListener("mouseover", (e) => {
+
+    // Edit functionality is pending - improvise the codebase and make less DOM calls
+    
+    /*this.ul.addEventListener("mouseover", (e) => {
       let editIcon = library.createElement({element: "img", attributes: [{attr: "src", value: "images/edit.png"}, {attr: "id", value: "editIcon"}]});
       library.setCSS({ element: editIcon, properties: [{name: "height", value: "16px"}, {name: "margin-left", value: "5px"}]});
       if(e.target.tagName.toLowerCase() === "li") {
@@ -92,17 +103,17 @@ class BuildTodoList {
         editBox.addEventListener("focusout", this.onEditingComplete);
         this.clicked = true;
       }
-    });
+    });*/
   }
 
-  onEditingComplete = (e) => {
+  /*onEditingComplete = (e) => {
     console.log(e);
     this.clicked = false;
     let span = e.target.childNodes[0];
     span.innerHTML = e.target.value;
     e.target.parentElement.appendChild(span);
     e.target.remove();
-  }
+  }*/
 
   //Creates a new <li> item and adds it to the todo list
   addToList(item) {
@@ -116,21 +127,21 @@ class BuildTodoList {
 
   //Deletes the selected items from the todo list
   deleteFromList(items) {
-    this.dataStorage.remove(items);
+    this.dataStorage.remove("data", items);
     items.forEach(item => {
       item.nextSibling.remove();
       item.remove();
     });
   };
 
-  sourceSelection = () => {
+  sourceSelection() {
 
     switch(this.select.value) {
       case "LocalStorage": 
       this.dataStorage = localstorage;
       library.setCSS({ element: this.uploadFile, properties: [{name: "display", value: "none"}]});
       this.ul.innerHTML = "";
-      this.constructData(this.dataStorage.read());
+      this.constructData(this.dataStorage.read("data"));
       break;
       
       case "API":
@@ -155,25 +166,9 @@ class BuildTodoList {
     }
   }
 
-  /*inputFile.addEventListener('change',function(event) {
-    let reader = new FileReader();
-    reader.readAsText(event.target.files[0]);
-
-    reader.onload = function() {
-      
-      let result = JSON.parse(reader.result);
-      for(let i of result) {       
-        let item = { data: i.data };
-        dataStorage.insert("data", item);
-        addToList(item);
-      }
-    }  
-  });*/
-
 }
 
-const localstorage = new Localstorage("data"),
-      counterLocalStorage = new Localstorage("counter"),
+const localstorage = new Localstorage(),
       file = new File([]),
       library = new Library(),
       api = new API(),

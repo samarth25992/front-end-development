@@ -92,12 +92,58 @@ class BST {
             console.log(node.data);
         }
     }
+
+    isBalanced = () => {
+        return (this.findMinHeight() >= this.findMaxHeight() - 1);
+    }
+
+    findMinHeight = (node = this.root) => {
+        if(node === null)
+            return 0;
+        let left = this.findMinHeight(node.left);
+        let right = this.findMinHeight(node.right);
+
+        return Math.min(left, right) + 1;
+    }
+
+    findMaxHeight = (node = this.root) => {
+        if(node === null)
+            return 0;
+        let left = this.findMaxHeight(node.left);
+        let right = this.findMaxHeight(node.right);
+
+        return Math.max(left, right) + 1;
+    }
+
+    levelOrder = () => {
+        let result = [];
+        let queue = [];
+        if(this.root !== null) {
+            queue.push(this.root);
+            while(queue.length > 0) {
+                let node = queue.shift();
+                result.push(node.data);
+                if(node.left) {
+                    queue.push(node.left);
+                }
+                if(node.right) {
+                    queue.push(node.right);
+                }
+            }
+        } else {
+            return null;
+        }
+        return result;
+    }
 }
 
 let bst = new BST();
-let arr = [15,25,10,7,22,17,13,5,9,27];
+let arr = [9,4,17,3,6,10,22,5,7,20];
 
 arr.forEach(i => bst.insert(i));
-bst.preOrder(bst.root);
+console.log(bst.findMaxHeight());
+console.log(bst.findMinHeight());
+console.log(bst.isBalanced());
+console.log(bst.levelOrder());
 
 

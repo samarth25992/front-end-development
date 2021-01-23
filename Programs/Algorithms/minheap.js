@@ -1,71 +1,75 @@
-let minHeap = function() {
+class MinHeap {
 
-    let heap = [null];
+    constructor(heap = []) {
+        this.heap = heap;
+    }
 
-    let insert = function(num) {
-        heap.push(num);
+    insert = (value) => {
+        this.heap.push(value);
+        let index = this.heap.length - 1;
+        let parent = this.parent(index);
 
-        if(heap.length > 2) {
-
-            let index = heap.length - 1;
-            while(index > 1 && heap[index] < heap[Math.floor(index/2)]) {
-                [heap[index],heap[Math.floor(index/2)]] = [heap[Math.floor(index/2)], heap[index]];
-                index = Math.floor(index/2);
-            }
+        while(index > 0 && this.heap[index] < this.heap[parent]) {
+            [this.heap[index], this.heap[parent]] = [this.heap[parent], this.heap[index]];
+            index = parent;
+            parent = this.parent(index);
         }
     }
 
-    let remove = function() {
-        let smallest = heap[1];
+    remove = () => {
+        let smallest = this.getMin();
 
-        if(heap.length > 2) {
-            heap[1] = heap[heap.length - 1];
-            heap.splice(heap.length - 1);
-            if(heap.length === 3) {
-                if(heap[1] > heap[2]){
-                    [heap[1], heap[2]] = [heap[2], heap[1]];
-                }
-                return smallest;
-            }
+        if(this.heap.length > 1) {
 
-            let i = 1;
-            let left = 2 * i;
-            let right = 2 * i + 1;
-            while(heap[left] && heap[right] && heap[i] >= heap[left] || heap[i] >= heap[right]) {
-                if(heap[left] < heap[right]) {
-                    [heap[i], heap[left]] = [heap[left], heap[i]];
-                    i = 2 * i;
+            this.heap[0] = this.heap[this.heap.length - 1];
+            this.heap.splice(this.heap.length - 1);
+
+            let index = 0;
+            let left = this.leftChild(index);
+            let right = this.rightChild(index);
+
+            while(this.heap[left] !== undefined && 
+                  this.heap[right] !== undefined && 
+                  this.heap[left] <= this.heap[index] || 
+                  this.heap[right] <= this.heap[index]) {
+                
+                if(this.heap[left] < this.heap[right]) {
+                    [this.heap[left], this.heap[index]] = [this.heap[index], this.heap[left]];
+                    index = left;
                 } else {
-                    [heap[i], heap[right]] = [heap[right], heap[i]];
-                    i = 2 * i + 1;
+                    [this.heap[right], this.heap[index]] = [this.heap[index], this.heap[right]];
+                    index = right;
                 }
 
-                left = 2 * i;
-                right = 2 * i + 1;
+                left = this.leftChild(index);
+                right = this.rightChild(index);
             }
 
-            if(heap[right] === undefined && heap[left] <= heap[i]) {
-                [heap[left], heap[i]] = [heap[i], heap[left]];
+            if(this.heap[right] === undefined && this.heap[left] < this.heap[index]) {
+                [this.heap[left], this.heap[index]] = [this.heap[index], this.heap[left]];
             }
-        } else if(heap.length === 2) {
-            heap.splice(1,1);
+
+        } else if(this.heap.length === 1) {
+            this.heap.splice(0,1);
         } else {
             return null;
         }
         return smallest;
     }
 
-    /*let nums = [3,2,1,5,6,4];
-    let k = 2;
-    let result = 0;
-    nums.forEach(item => {
-        insert(item);
-    });
-
-    while(k) {
-        result = remove();
-        k--;
+    parent = (index) => {
+        return Math.floor((index - 1) / 2);
     }
 
-    console.log(result);*/
+    leftChild = (index) => {
+        return 2 * index + 1;
+    }
+
+    rightChild = (index) => {
+        return 2 * index + 2;
+    }
+
+    getMin = () => {
+        return this.heap[0];
+    }
 }

@@ -1,0 +1,48 @@
+:root {
+    box-sizing: border-box;
+    --brand-color: #e1232a;
+}
+
+*,
+::after,
+::before {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #eee;
+    line-height: 1.2;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body * + * {
+    margin-top: 1.5em;
+}
+
+.container {
+    max-width: 1080px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    color: var(--brand-color);
+}
+
+.blog {
+    text-align: justify;
+}
+
+.tile-image {
+    float: left;
+    margin: 0 1.5em 1.5em 0;
+    width: 40%;
+    height:auto;
+}
+
+.tile-image > img {
+    width: 100%;
+    height: auto;
+    border-radius: 1.5em;
+}

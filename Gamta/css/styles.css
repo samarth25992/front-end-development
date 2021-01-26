@@ -1,0 +1,67 @@
+:root {
+    box-sizing: border-box;
+    --brand-color: #e1232a;
+}
+
+*,
+::after,
+::before {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #eee;
+    line-height: 1.2;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+}
+
+body * + * {
+    margin-top: 1.5em;
+}
+
+.container {
+    max-width: 1080px;
+    margin:auto;
+}
+
+header {
+    text-align: center;
+    color: var(--brand-color);
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex > * + * {
+    margin: 0 0 1.5em 1.5em;
+}
+
+.flex > .tile:nth-child(3n + 2) {
+    margin-left: 0;
+}
+
+.tile {
+    flex: 1;
+    flex-basis: calc(33.33% - 1.5em);
+}
+
+.tile img {
+    width: 100%;
+    height: auto;
+    border-radius: 1.4em;
+}
+
+.tile-action button {
+    background-color: var(--brand-color);
+    padding: 0.5em;
+    color: #fff;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+}
+
+
+

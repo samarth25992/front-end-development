@@ -1,21 +1,24 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
+ * @param {number[]} nums
+ * @return {number[][]}
  */
-/**
- * @param {ListNode} head
- * @return {ListNode}
- */
-var oddEvenList = function(head) {
+var permute = function(nums) {
     
-    let head1 = head;
-    let head2 = head.next;
+    let permutations = [];
+    for (let i = 0; i < nums.length; i++) {
 
-    while(head1!== null) {
-        head1.next = head1.next.next;
-        head2.next = head2.next.next;
+        let result = [nums[i]];
+        for (let j = 0; j < nums.length; j++) {
+
+            if(j === i) {
+                continue;
+            }
+
+            result.push(nums[j]);
+        }
+
+        permutations.push(result);
     }
+
+    return permutations;
 };

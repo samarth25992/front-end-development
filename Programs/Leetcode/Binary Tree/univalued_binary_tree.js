@@ -12,19 +12,19 @@
  * 
  * @Problem - https://leetcode.com/problems/univalued-binary-tree/
  */
-var isUnivalTree = function(root) {
-    
+var isUnivalTree = function (root) {
+
     let target = root.val;
 
     let checkTree = (root) => {
-        if(root === null) {
+        if (root === null) {
             return true;
         }
-    
-        if(root.val !== target) {
+
+        if (root.val !== target) {
             return false;
         }
-    
+
         return checkTree(root.left) && checkTree(root.right);
     }
     return checkTree(root);
